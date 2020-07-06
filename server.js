@@ -75,7 +75,6 @@ var readKeys = function (request, resp) {
                             josnData.tackingId.map((id, index) => {
                                 if (signup.eventsCapturedByTrackingIds && trackedData && trackedData[0] && trackedData[0][id] && trackedData[0][id].value && !signup.eventsCapturedByTrackingIds[trackedData[0][id].value.trackingId]) {
                                     signup.eventsCapturedByTrackingIds[trackedData[0][id].value.trackingId] = 1;
-                                } else if (signup.eventsCapturedByTrackingIds && trackedData[0] && trackedData[0][id] && [trackedData[0][id].value.trackingId]) {
                                 } else if (signup.eventsCapturedByTrackingIds && trackedData && trackedData[0] && trackedData[0][id] && [trackedData[0][id].value.trackingId]) {
                                     signup.eventsCapturedByTrackingIds[trackedData[0][id].value.trackingId] += 1;
                                 }
