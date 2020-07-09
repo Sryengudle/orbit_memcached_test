@@ -18,16 +18,17 @@ cron.scheduleJob(rule, function () {
     getRandomIdAndData();
 })
 
-let getRandomIdAndData = function(request, resp){
+let getRandomIdAndData = function (request, resp) {
     let trackId = josnData.tackingId[Math.floor(Math.random() * josnData.tackingId.length)];
+    var randomCharacter = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
     if (trackId) {
         josnData && josnData.events ? josnData.events.map(event => {
             if (trackId === event.value.trackingId) {
                 event["time"] = new Date();
-                memcached.add(trackId, event, 186400, function (err) {
+                memcached.add(Math.floor(Math.random() * randomCharacter.length), event, 186400, function (err) {
                     // if (err) throw new err;
                 });
-                if(request){
+                if (request) {
                     resp.send({
                         status: 200,
                         message: 'success'
@@ -67,12 +68,12 @@ var readKeys = function (request, resp) {
                     if (keys_length == 0) {
                         let trackedData = [];
                         memcached.getMulti(key_array, function (err, data) {
+                            trackedData.push(data);
                             let signup = {
                                 totalEventsCaptured: Object.keys(data).length,
                                 eventsCapturedByTrackingIds: {}
                             }
-                            trackedData.push(data);
-                            josnData.tackingId.map((id, index) => {
+                            key_array.map((id, index) => {
                                 if (signup.eventsCapturedByTrackingIds && trackedData && trackedData[0] && trackedData[0][id] && trackedData[0][id].value && !signup.eventsCapturedByTrackingIds[trackedData[0][id].value.trackingId]) {
                                     signup.eventsCapturedByTrackingIds[trackedData[0][id].value.trackingId] = 1;
                                 } else if (signup.eventsCapturedByTrackingIds && trackedData && trackedData[0] && trackedData[0][id] && [trackedData[0][id].value.trackingId]) {
